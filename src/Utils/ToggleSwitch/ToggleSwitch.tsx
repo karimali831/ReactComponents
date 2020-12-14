@@ -1,5 +1,5 @@
 import * as React from 'react';
-import './ToggleSwitch.css';
+import './ToggleSwitch.less';
 
 interface IOwnProps {
     id: string
