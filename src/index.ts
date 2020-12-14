@@ -1,5 +1,4 @@
 import './SelectionRefinement/IBaseModel';
-import './Utils/Utils'
 
 export * from './Loader/Loader';
 export * from './SelectionRefinement/SelectionRefinement';
