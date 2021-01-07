@@ -4,6 +4,7 @@ import * as React from 'react'
 interface IOwnProps {
     placeholder: string
     filter?: string,
+    focus?: boolean,
     onChange: (filter: string) => void
 }
 
@@ -34,6 +35,7 @@ export class RefinementInput extends React.Component<IOwnProps, IOwnState> {
     public render = () => (
         <input
             className="form input100"
+            autoComplete="off"
             type="text"
             ref={this.inputRef}
             defaultValue={this.state.filter}
@@ -44,7 +46,7 @@ export class RefinementInput extends React.Component<IOwnProps, IOwnState> {
     )
 
     public focus = () => {
-        if (this.inputRef.current) {
+        if (this.inputRef.current && this.props.focus) {
             this.inputRef.current.focus()
         }
     }

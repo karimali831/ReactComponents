@@ -15,6 +15,8 @@ interface IOwnProps<T> {
     filteredResults: T[],
     setFilterToItemName: boolean,
     loading: boolean,
+    resultsHeight?: number,
+    focus?: boolean,
     itemSelected: (item: T) => void,
     onCancel?: () => void,
     onChange: (filter: string) => void
@@ -38,9 +40,9 @@ export class SelectionRefinement<T extends IBaseModel> extends React.Component<I
             <div className="wrap-input100 validate-input m-b-23 selection-refinement">
                 <span className="label-input100">{this.props.label}</span>
                 <div className={this.state.showResults ? "refinement-search" : ""}>
-                    <RefinementInput ref={this.inputRef} filter={this.state.filter} placeholder={this.props.placeholder} onChange={this.props.onChange} />
+                    <RefinementInput focus={this.props.focus} ref={this.inputRef} filter={this.state.filter} placeholder={this.props.placeholder} onChange={this.props.onChange} />
                     <span className="focus-input100" data-symbol="&#xf1c3;" />
-                    <RefinementDropdown<T> results={this.props.filteredResults} showResults={this.state.showResults} onCancel={this.onCancel} itemSelected={this.itemSelected} loading={this.props.loading} />
+                    <RefinementDropdown<T> resultsHeight={this.props.resultsHeight} results={this.props.filteredResults} showResults={this.state.showResults} onCancel={this.onCancel} itemSelected={this.itemSelected} loading={this.props.loading} />
                 
                 </div>
             </div>
@@ -64,7 +66,7 @@ export class SelectionRefinement<T extends IBaseModel> extends React.Component<I
 
 
     private focusInput = () => {
-        if (this.inputRef.current) {
+        if (this.inputRef.current && this.props.focus) {
             this.inputRef.current.focus();
         }
     }

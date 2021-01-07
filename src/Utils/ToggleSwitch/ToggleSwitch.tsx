@@ -8,13 +8,13 @@ interface IOwnProps {
     offText?: string;
     checked: boolean;
     disabled?: false;
+    inline?: boolean;
     onChange: (checked: boolean) => void
 }
 
 export const ToggleSwitch: React.FC<IOwnProps> = (props) => {
     return (
-        <div>
-          <span className="label-input100" style={{ marginRight: 5 }}>{props.name}</span>
+        <div style={{ display: props.inline ? "inline" : "block" }}>
           <div className="toggle-switch small-switch">
             <input
               type="checkbox"
@@ -46,6 +46,7 @@ export const ToggleSwitch: React.FC<IOwnProps> = (props) => {
               </label>
             ) : null}
           </div>
+          <span className="label-input100" style={{ marginRight: 5 }}>{props.name}</span>
         </div>
       );
 }

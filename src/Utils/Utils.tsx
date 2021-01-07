@@ -18,5 +18,18 @@ export const boolHighlight = (bool: boolean) => {
 	return <span className={"label label-" + (bool ? "success" : "danger")}>{bool ? "Yes" : "No"}</span>
 }
 
-export const rootUrl: string = process.env.NODE_ENV === "development" ? "http://localhost:53822" : window.location.origin;
-export const appUrl: string = "http://localhost:3000";
+export const strIsNullOrEmpty = (s: string) => {
+	return s === null || s === undefined || s === "";
+}
+
+export const intIsNullOrEmpty = (s: number) => {
+	return s === null || s === undefined || s === 0;
+}
+
+export const objIsNullOrEmpty = (obj: any) => {
+	return obj === null || obj === undefined
+}
+
+export const listIsNullOrEmpty = (obj: any[]) => {
+	return obj === null || obj === undefined || obj.length === 0;
+}
