@@ -7,7 +7,7 @@ interface IOwnProps {
     onText?: string;
     offText?: string;
     checked: boolean;
-    disabled?: false;
+    disabled?: boolean;
     inline?: boolean;
     onChange: (checked: boolean) => void
 }

@@ -1,6 +1,8 @@
 interface IBaseModel {
     id: string,
-    name: string
+    name: string,
+    leftImage?: string,
+    rightContent?: JSX.Element,
     disabled?: boolean
 }
 

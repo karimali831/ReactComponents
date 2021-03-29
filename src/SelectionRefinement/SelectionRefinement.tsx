@@ -1,15 +1,20 @@
 import * as React from 'react'
+import { FaSearch, FaTimes } from 'react-icons/fa';
+import { Load } from '../Utils/Loader/Loader';
 import IBaseModel from './IBaseModel';
 import { RefinementDropdown } from './RefinementDropdown';
 import { RefinementInput } from './RefinementInput';
+import './SelectionRefinement.css'
 
 interface IOwnState {
     filter?: string,
-    showResults: boolean
+    showResults: boolean,
+    loading: boolean,
+    focus: boolean
 }
 
 interface IOwnProps<T> {
-    filter: string,
+    filter?: string,
     label: string,
     placeholder: string,
     filteredResults: T[],
@@ -17,63 +22,101 @@ interface IOwnProps<T> {
     loading: boolean,
     resultsHeight?: number,
     focus?: boolean,
+    delay?: number,
     itemSelected: (item: T) => void,
     onCancel?: () => void,
     onChange: (filter: string) => void
 }
 
-
 export class SelectionRefinement<T extends IBaseModel> extends React.Component<IOwnProps<T>, IOwnState> {
-
-    private inputRef = React.createRef<RefinementInput>();
 
     constructor(props: IOwnProps<T>) {
         super(props);
 
         this.state = {
-            filter: this.props.filter !== undefined ? this.props.filter : "",
-            showResults: false
+            filter: this.props.filter ?? "",
+            showResults: false,
+            loading: this.props.loading,
+            focus: this.props.focus ?? false
         };
     }
+
     public render() {
         return (
             <div className="wrap-input100 validate-input m-b-23 selection-refinement">
                 <span className="label-input100">{this.props.label}</span>
                 <div className={this.state.showResults ? "refinement-search" : ""}>
-                    <RefinementInput focus={this.props.focus} ref={this.inputRef} filter={this.state.filter} placeholder={this.props.placeholder} onChange={this.props.onChange} />
-                    <span className="focus-input100" data-symbol="&#xf1c3;" />
-                    <RefinementDropdown<T> resultsHeight={this.props.resultsHeight} results={this.props.filteredResults} showResults={this.state.showResults} onCancel={this.onCancel} itemSelected={this.itemSelected} loading={this.props.loading} />
-                
+                    <RefinementInput 
+                        delay={this.props.delay} 
+                        focus={this.props.focus} 
+                        filter={this.state.filter} 
+                        placeholder={this.props.placeholder} 
+                        focused={(value: boolean) => this.setState({ focus: value })}
+                        onChange={this.onChange} 
+                    />
+                    <span className="refinement-icon">
+                    {
+                        this.state.loading  ?
+                            <Load inlineDisplay={true} smallSize={true} /> :
+                        <>
+                            <FaSearch className={this.state.focus ? "search-icon-focus" : "search-icon"} />
+                            {this.state.showResults && <FaTimes className="refinement-right" onClick={() => this.onChange("")} />}
+                        </>
+                    }
+                    </span>
+                    <RefinementDropdown<T> 
+                        filter={this.state.filter}
+                        resultsHeight={this.props.resultsHeight} 
+                        results={this.props.filteredResults} 
+                        showResults={this.state.showResults} 
+                        onCancel={this.onCancel} 
+                        itemSelected={this.itemSelected}
+                        loading={this.state.loading} 
+                    />
                 </div>
             </div>
-
-
         );
     }
 
-    public componentDidMount = () => {
-        this.focusInput()
+    private onChange = (filter: string) => {
+        this.setState({ filter: filter })
     }
+
 
     public componentDidUpdate = (prevProps: IOwnProps<T>, prevState: IOwnState) => {
-        if (JSON.stringify(this.props.filteredResults.map(i => i.id)) !== JSON.stringify(prevProps.filteredResults.map(i => i.id))) {
-            this.setState({
-                showResults: this.props.filteredResults.length > 0,
-                filter: this.props.filter !== undefined ? this.props.filter : this.state.filter
-            })
+        if (this.state.filter) {
+            if ((this.state.filter.length < 3 || this.state.filter === "") && this.state.showResults) {
+                this.setState({ showResults: false })
+            }
+
+            if (this.state.filter !== prevState.filter && this.state.filter.length > 2) {
+                if (!this.state.showResults) {
+                    this.setState({ showResults: true })
+                }
+
+                this.props.onChange(this.state.filter)
+            }
+        }
+        else{
+            if (this.state.showResults) {
+                this.setState({ showResults: false })
+            }
+        }
+
+        if (prevProps.loading !== this.props.loading) {
+            const sameResults = JSON.stringify(this.props.filteredResults.map(i => i.id)) === JSON.stringify(prevProps.filteredResults.map(i => i.id));    
+
+            if (this.props.filteredResults.length > 0 && prevProps.filteredResults.length > 0 && sameResults) {
+                this.setState({ loading: false })
+            }
+            else {
+                this.setState({ loading: this.props.loading })
+            }
         }
     }
 
-
-    private focusInput = () => {
-        if (this.inputRef.current && this.props.focus) {
-            this.inputRef.current.focus();
-        }
-    }
 
     private itemSelected = (selectedItem: T) => {
-        this.focusInput();
-
         if (selectedItem && !selectedItem.disabled) {
             this.props.itemSelected(selectedItem);
 

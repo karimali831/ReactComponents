@@ -12,7 +12,11 @@ module.exports = {
 
     resolve: {
         // Add '.ts' and '.tsx' as resolvable extensions.
-        extensions: [".ts", ".tsx", ".js", ".json"]
+        extensions: [".ts", ".tsx", ".js", ".json"],
+        alias: {
+            React: '/node_modules/react/',
+            ReactDOM: '/node_modules/react-dom/'
+        }
     },
 
     module: {
@@ -20,7 +24,7 @@ module.exports = {
             // All files with a '.ts' or '.tsx' extension will be handled by 'awesome-typescript-loader'.
             { test: /\.tsx?$/, loader: "awesome-typescript-loader" },
   
-            { test: /\.less?$/, use: [ { loader: 'style-loader' }, { loader: 'css-loader'}, { loader: "less-loader"} ] },
+            // { test: /\.less?$/, use: [ { loader: 'style-loader' }, { loader: 'css-loader'}, { loader: "less-loader"} ] },
 
             {
                 test: [/\.bmp$/, /\.gif$/, /\.jpe?g$/, /\.png$/],
@@ -29,6 +33,24 @@ module.exports = {
                   limit: 10000,
                   name: 'static/media/[name].[hash:8].[ext]',
                 },
+            },
+            {
+              test: /\.(?:le|c)ss$/,
+              use: [
+                require.resolve('style-loader'),
+                {
+                  loader: require.resolve('css-loader'),
+                  options: {
+                    importLoaders: 1,
+                  },
+                },
+                {
+                  loader: require.resolve('less-loader'),
+                  options: {
+                    importLoaders: 1,
+                  },
+                }
+              ],
             },
             
             // All output '.js' files will have any sourcemaps re-processed by 'source-map-loader'.

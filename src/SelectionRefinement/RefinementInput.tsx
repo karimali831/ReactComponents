@@ -5,7 +5,9 @@ interface IOwnProps {
     placeholder: string
     filter?: string,
     focus?: boolean,
-    onChange: (filter: string) => void
+    delay?: number,
+    onChange: (filter: string) => void,
+    focused: (value: boolean) => void
 }
 
 interface IOwnState {
@@ -18,7 +20,7 @@ export class RefinementInput extends React.Component<IOwnProps, IOwnState> {
         if (this.state.filter !== "") {
             this.props.onChange(this.state.filter);
         }
-      }, 1000);
+    }, this.props.delay ?? 300);
 
     private inputRef: React.RefObject<HTMLInputElement>;
 
@@ -26,20 +28,33 @@ export class RefinementInput extends React.Component<IOwnProps, IOwnState> {
         super(props);
 
         this.inputRef = React.createRef<HTMLInputElement>();
+
         this.state = {
-            filter: this.props.filter !== undefined ? this.props.filter : "",
+            filter: this.props.filter ?? ""
         };
     }
-    
 
+    public componentDidMount() {
+        this.focus();
+    }
+    
+    public componentDidUpdate = (prevProps: IOwnProps, prevState: IOwnState) => {
+        if (prevProps.filter !== this.props.filter && this.props.filter !== undefined) {
+            this.setState({ filter: this.props.filter })
+        }
+    }
+    
     public render = () => (
         <input
             className="form input100"
+            style={{ marginBottom: -25 }}
             autoComplete="off"
             type="text"
             ref={this.inputRef}
-            defaultValue={this.state.filter}
+            value={this.state.filter}
             placeholder={this.props.placeholder}
+            onFocus={() => this.props.focused(true)}
+            onBlur={() => this.props.focused(false)}
             onKeyDown={this.handleKeyPress}
             onChange={this.handleCriteriaChange}
         />
@@ -58,11 +73,15 @@ export class RefinementInput extends React.Component<IOwnProps, IOwnState> {
     }
 
     private handleCriteriaChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        if (e.target.value.length > 2) {
+        const filter = e.target.value;
 
+        if (filter.length < 3) {
+            this.props.onChange(filter);
+        }
+        else{
             this.setState({ filter: e.target.value }, () => {
                 this.raiseDoSearchWhenUserStoppedTyping();
-            });
+            })
         }
     };
 }

@@ -12,7 +12,7 @@ export const Load: React.FC<IOwnProps> = (props) => {
         {
             props.withBackground ?
                 <div id="cover-spin" style={{ display: "block" }} /> : 
-                <div className={`loader ${props.smallSize ? "loader-small" : "loader-big"}`}  style={{ display: props.inlineDisplay ? "inline-block" : "block"}} />
+                <div className={`loader ${props.smallSize ? "loader-small" : "loader-medium"}`}  style={{ display: props.inlineDisplay ? "inline-block" : "block"}} />
         }
       </>
     )

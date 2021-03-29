@@ -1,13 +1,14 @@
-import * as React from 'react'
-;
-interface IOwnState {
+import * as React from 'react';
 
-}
+export interface IPropsFromDispatch {}
 
-interface IOwnProps {
+export interface IPropsFromState {}
 
-}
+export interface IOwnState {}
 
+export interface IOwnProps {}
+
+type AllProps = IPropsFromDispatch & IPropsFromState & IOwnProps
 
 export class EmptyStateComponent extends React.Component<IOwnProps, IOwnState> {
 
@@ -18,6 +19,15 @@ export class EmptyStateComponent extends React.Component<IOwnProps, IOwnState> {
 
         };
     }
+
+    public componentDidMount() {
+        
+    }
+
+    public componentDidUpdate = (prevProps: AllProps, prevState: IOwnState) => {
+
+    }
+
     public render() {
         return (
             <div />
@@ -25,5 +35,4 @@ export class EmptyStateComponent extends React.Component<IOwnProps, IOwnState> {
 
         );
     }
-
 }

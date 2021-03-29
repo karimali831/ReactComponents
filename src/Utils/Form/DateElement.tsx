@@ -4,6 +4,7 @@ interface IOwnProps {
     label: string,
     icon: string,
     id: string,
+    focus?: boolean,
     required?: boolean,
     disabled?: boolean,
     value?: string,
@@ -19,6 +20,7 @@ export const DateElement: React.FC<IOwnProps> = (props) => {
             <span className="label-input100">{props.label}</span>
             <input 
                 type="datetime-local" 
+                autoFocus={props.focus}
                 id={props.id} 
                 value={props.value} 
                 defaultValue={props.defaultValue} 

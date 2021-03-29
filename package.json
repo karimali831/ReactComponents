@@ -1,6 +1,6 @@
 {
   "name": "@appology/react-components",
-  "version": "1.4.1",
+  "version": "1.4.4",
   "private": false,
   "description": "Appology React components",
   "main": "dist/index.js",
@@ -15,12 +15,14 @@
   "license": "ISC",
   "dependencies": {
     "@types/lodash": "^4.14.165",
+    "react-highlight-words": "^0.17.0",
+    "react-icons": "^4.1.0",
     "react-image-fallback": "^8.0.0",
     "webpack": "^4.28.3"
   },
   "devDependencies": {
     "@types/react": "^16.7.18",
-    "@types/react-dom": "16.0.9",
+    "@types/react-dom": "^16.0.9",
     "awesome-typescript-loader": "^5.2.1",
     "babel-cli": "^6.24.1",
     "babel-core": "^6.24.1",
@@ -33,7 +35,7 @@
     "less": "^3.9.0",
     "less-loader": "^4.1.0",
     "react": "^16.13.1",
-    "react-dom": "^16.6.0",
+    "react-dom": "^16.13.1",
     "source-map-loader": "^0.2.4",
     "style-loader": "^0.23.1",
     "tslib": "^1.9.3",

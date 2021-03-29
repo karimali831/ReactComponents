@@ -1,0 +1,24 @@
+.modal {
+    background: rgba(0, 0, 0, 0.6);
+}
+
+.modal-container {
+    position: absolute;
+    width: 60%;
+    background: transparent;
+    left: 25%;
+    top: 30%;
+    padding: 20px;
+}
+
+.bootstrap-dialog .bootstrap-dialog-title {
+    color: #fff;
+    display: inline-block;
+    font-size: 16px;
+}
+
+
+.bootstrap-dialog .modal-header {
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+}

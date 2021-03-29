@@ -4,6 +4,7 @@ interface IOwnProps {
     label: string,
     icon: string,
     id: string,
+    focus?: boolean,
     required?: boolean,
     textAreaRows?: number,
     disabled?: boolean,
@@ -21,6 +22,7 @@ export const TextAreaElement: React.FC<IOwnProps> = (props) => {
             <textarea 
                 id={props.id} 
                 name={props.id} 
+                autoFocus={props.focus}
                 value={props.value} 
                 rows={props.textAreaRows} 
                 defaultValue={props.defaultValue}
