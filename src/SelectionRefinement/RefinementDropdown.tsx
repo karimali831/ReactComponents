@@ -9,6 +9,8 @@ interface IOwnProps<T> {
     filter?: string,
     resultsHeight?: number,
     showResults: boolean,
+    resultsLeftIcon?: JSX.Element,
+    disableHighlighter?: boolean,
     onCancel: () => void
     itemSelected: (selectedResult: T) => void
 }
@@ -27,15 +29,18 @@ export class RefinementDropdown<T extends IBaseModel> extends React.Component<IO
                                         this.props.results.length > 0 ? this.props.results.map(r =>
                                             <div key={r.id} className={`selection-item ${r.disabled ? "disabled" : ""}`} onClick={() => this.props.itemSelected(r)}>
                                                 <label>
-                                                    <span className="selection-item-left">{r.leftImage ? <img src={r.leftImage} width="24" height="24" /> : <FaSearch />}</span>
-                                                    <Highlighter
-                                                        highlightClassName="highlight"
-                                                        searchWords={[this.props.filter]}
-                                                        autoEscape={true}
-                                                        textToHighlight={r.name}
-                                                    />
+                                                    <span className="selection-item-left">{r.leftImage ? <img src={r.leftImage} width="24" height="24" /> : this.props.resultsLeftIcon ?? <FaSearch />}</span>
+                                                    {
+                                                        !this.props.disableHighlighter &&
+                                                        <Highlighter
+                                                            highlightClassName="highlight"
+                                                            searchWords={this.props.filter?.split(" ")}
+                                                            autoEscape={true}
+                                                            textToHighlight={r.name}
+                                                        />
+                                                    }
                                                     {r.disabled ? "(coming soon)" : ""} 
-                                                    <span className="refinement-right">{r.rightContent}</span>
+                                                    <span className="refinement-results-right">{r.rightContent}</span>
                                                 </label>
                                             </div>
                                         ) 

@@ -23,6 +23,8 @@ interface IOwnProps<T> {
     resultsHeight?: number,
     focus?: boolean,
     delay?: number,
+    resultsLeftIcon?: JSX.Element,
+    disableHighlighter?: boolean,
     itemSelected: (item: T) => void,
     onCancel?: () => void,
     onChange: (filter: string) => void
@@ -60,7 +62,7 @@ export class SelectionRefinement<T extends IBaseModel> extends React.Component<I
                             <Load inlineDisplay={true} smallSize={true} /> :
                         <>
                             <FaSearch className={this.state.focus ? "search-icon-focus" : "search-icon"} />
-                            {this.state.showResults && <FaTimes className="refinement-right" onClick={() => this.onChange("")} />}
+                            {this.state.filter !== "" && <FaTimes className="refinement-filter-clear" onClick={() => this.onChange("")} />}
                         </>
                     }
                     </span>
@@ -69,9 +71,11 @@ export class SelectionRefinement<T extends IBaseModel> extends React.Component<I
                         resultsHeight={this.props.resultsHeight} 
                         results={this.props.filteredResults} 
                         showResults={this.state.showResults} 
+                        resultsLeftIcon={this.props.resultsLeftIcon}
                         onCancel={this.onCancel} 
                         itemSelected={this.itemSelected}
                         loading={this.state.loading} 
+                        disableHighlighter={this.props.disableHighlighter}
                     />
                 </div>
             </div>
