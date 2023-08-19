@@ -1,21 +1,20 @@
-import { debounce } from 'lodash';
-import * as React from 'react'
+import { debounce } from "lodash";
+import * as React from "react";
 
 interface IOwnProps {
-    placeholder: string
-    filter?: string,
-    focus?: boolean,
-    delay?: number,
-    onChange: (filter: string) => void,
-    focused: (value: boolean) => void
+    placeholder: string;
+    filter?: string;
+    focus?: boolean;
+    delay?: number;
+    onChange: (filter: string) => void;
+    focused: (value: boolean) => void;
 }
 
 interface IOwnState {
-    filter: string
+    filter: string;
 }
 
 export class RefinementInput extends React.Component<IOwnProps, IOwnState> {
-
     public raiseDoSearchWhenUserStoppedTyping = debounce(() => {
         if (this.state.filter !== "") {
             this.props.onChange(this.state.filter);
@@ -30,20 +29,23 @@ export class RefinementInput extends React.Component<IOwnProps, IOwnState> {
         this.inputRef = React.createRef<HTMLInputElement>();
 
         this.state = {
-            filter: this.props.filter ?? ""
+            filter: this.props.filter ?? "",
         };
     }
 
     public componentDidMount() {
         this.focus();
     }
-    
-    public componentDidUpdate = (prevProps: IOwnProps, prevState: IOwnState) => {
-        if (prevProps.filter !== this.props.filter && this.props.filter !== undefined) {
-            this.setState({ filter: this.props.filter })
+
+    public componentDidUpdate = (prevProps: IOwnProps) => {
+        if (
+            prevProps.filter !== this.props.filter &&
+            this.props.filter !== undefined
+        ) {
+            this.setState({ filter: this.props.filter });
         }
-    }
-    
+    };
+
     public render = () => (
         <input
             className="form input100"
@@ -58,30 +60,33 @@ export class RefinementInput extends React.Component<IOwnProps, IOwnState> {
             onKeyDown={this.handleKeyPress}
             onChange={this.handleCriteriaChange}
         />
-    )
+    );
 
     public focus = () => {
         if (this.inputRef.current && this.props.focus) {
-            this.inputRef.current.focus()
+            this.inputRef.current.focus();
         }
-    }
+    };
 
     private handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
-        if (e.key === "Enter" && this.state.filter !== "" && this.state.filter !== this.props.filter) {
+        if (
+            e.key === "Enter" &&
+            this.state.filter !== "" &&
+            this.state.filter !== this.props.filter
+        ) {
             this.props.onChange(this.state.filter);
         }
-    }
+    };
 
     private handleCriteriaChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const filter = e.target.value;
 
         if (filter.length < 3) {
             this.props.onChange(filter);
-        }
-        else{
+        } else {
             this.setState({ filter: e.target.value }, () => {
                 this.raiseDoSearchWhenUserStoppedTyping();
-            })
+            });
         }
     };
 }

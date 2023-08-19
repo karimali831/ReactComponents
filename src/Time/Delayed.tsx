@@ -1,20 +1,20 @@
-import * as React from 'react';
+import * as React from "react";
 
 interface IOwnState {
-    hidden: boolean
+    hidden: boolean;
 }
 
- interface IOwnProps {
-    waitBeforeShow: number
+interface IOwnProps {
+    waitBeforeShow: number;
+    children: React.ReactNode;
 }
 
 export class Delayed extends React.Component<IOwnProps, IOwnState> {
-
     constructor(props: IOwnProps) {
         super(props);
 
         this.state = {
-            hidden: true
+            hidden: true,
         };
     }
 
@@ -24,11 +24,7 @@ export class Delayed extends React.Component<IOwnProps, IOwnState> {
         }, this.props.waitBeforeShow);
     }
 
-    public componentDidUpdate = (prevProps: IOwnProps, prevState: IOwnState) => {
-
-    }
-
     public render() {
-        return this.state.hidden ? '' : this.props.children;
+        return this.state.hidden ? "" : this.props.children;
     }
 }
